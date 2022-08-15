@@ -1,111 +1,39 @@
-from loguru import logger
+import os
 import uvicorn
-from fastapi import (
-    FastAPI,
-    File,
-    UploadFile,
-)
-from pydantic import (
-    BaseModel,
-    Field,
-)
-from icevision import models
-import torch
-import time
-from inference_utils import *
-import pytesseract
+from fastapi import FastAPI, File, UploadFile, Response
+from fastapi.responses import StreamingResponse, FileResponse
+import numpy as np
+import io
+from PIL import Image
+import cv2
+import warnings
+import onnxruntime 
 
-
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-logger.info(f"Running inference on: {device}")
-
-model_type = models.ultralytics.yolov5
-backbone = model_type.backbones.medium
-model = model_type.model(backbone=backbone(pretrained=True), num_classes=2, img_size=IMAGE_SIZE)
-model.load_state_dict(torch.load("model.pth"))
-model = model.to(device)
-logger.info(f"Model loaded on: {device}")
 
 app = FastAPI()
 
-class OcrResponse(BaseModel):
-    text: str = Field(..., example="ABC 123")
-    confidence: float = Field(..., example=0.99)
-    bbox_width: float = Field(..., example=0.5)
-    bbox_height: float = Field(..., example=0.5)
-    bbox_area: float = Field(..., example=0.8)
 
 
+@app.get('/')
+def home():
+    return {'Title': 'Super Resolution and Colorisation API'}
 
 
+# endpoint for just enhancing the image
+@app.post("/enhance")
+async def root(file: UploadFile = File(...)):
+    
 
-app = FastAPI(
-    title="Automatic License Plate Recognition API",
-    description="""A collection of NLP Applications served as APIs using FastAPI.""",
-    version="0.0.1",
-    debug=True,
-)
+    contents = io.BytesIO(await file.read())
+    new_img = Image.open(contents) 
+    x = np.array(new_img,dtype=np.float32) 
+    x = np.expand_dims(x, axis=0)
+    sess = onnxruntime.InferenceSession("./src/models/model.onnx")
+    x = x if isinstance(x, list) else [x]
+    feed = dict([(input.name, x[n]) for n, input in enumerate(sess.get_inputs())])
+    pred_onnx = sess.run(None,  feed)[0]
+    pred = np.squeeze(pred_onnx)
+    im_rgb = cv2.cvtColor(pred[:, :, 0], cv2.COLOR_BGR2RGB)
+    res, im_png = cv2.imencode(".png", im_rgb)
+    return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
 
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-favicon_path = "./images/favicon.ico"
-
-
-@app.get("/favicon.ico", include_in_schema=False)
-async def favicon():
-    return FileResponse(favicon_path)
-
-
-@app.get("/", response_class=PlainTextResponse, tags=["home"])
-async def home():
-    """
-    The home function returns a welcome message and some instructions.
-    Args:
-    Returns:
-        A note that is displayed when the user accesses the root of our api
-    """
-    note = """
-    WordsAI API 📚
-    A collection of NLP Applications served as APIs using FastAPI!
-    Note: add "/redoc" to get the complete documentation.
-    """
-    return note
-
-@app.post(
-    "/predict",
-    summary="Reads the car license plate from photo.",
-    response_model=OcrResponse,
-)
-def upload_image(
-    image: UploadFile = File(...),
-):
-    s = time.time()
-    image_file = image.file.read()
-    pilimage = read_imagefile(image_file)
-
-    logger.info(f"Read image in {time.time() - s:.2f} seconds")
-    s = time.time()
-    pred_dict  = model_type.end2end_detect(pilimage, INFER_TFMS, model, class_map=CLASS_MAP, detection_threshold=0.3)
-
-    logger.info(f"Model inference done in {time.time() - s:.2f} seconds")
-    s = time.time()
-
-    bbox = extract_biggest_bbox(pred_dict["detection"]["bboxes"])
-    coords = extract_coords_from_bbox(bbox)
-    roi = crop_and_enhance(pilimage, coords)
-    result = read_text_from_roi(roi, TEXTRACT)
-
-    logger.info(f"Results post-processing in {time.time() - s:.2f} seconds")
-
-    return result[0]
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0")
