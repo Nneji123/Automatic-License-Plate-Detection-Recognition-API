@@ -20,4 +20,4 @@ COPY . .
 
 EXPOSE 8000:8000
 
-CMD cd src && uvicorn app:app --reload --port 8000
+CMD cd src && gunicorn -w 3 -k uvicorn.workers.UvicornWorker app:app --bind 0.0.0.0:$PORT

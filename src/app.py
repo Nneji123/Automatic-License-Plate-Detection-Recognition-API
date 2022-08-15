@@ -1,4 +1,3 @@
-import os
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, Response, Request
 from fastapi.responses import StreamingResponse, FileResponse

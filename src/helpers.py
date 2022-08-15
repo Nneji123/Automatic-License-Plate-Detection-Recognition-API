@@ -1,5 +1,4 @@
 import tensorflow as tf
-#tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 import cv2
 import numpy as np
 from utils import detect_lp
@@ -7,7 +6,9 @@ from tensorflow.keras.models  import model_from_json
 from os.path import splitext,basename
 from sklearn.preprocessing import LabelEncoder
 from tensorflow import keras
+import pytesseract
 import glob
+from PIL import Image
 
 def load_model(path):
     try:
@@ -43,20 +44,24 @@ def get_plate(image_path, Dmax=608, Dmin = 608):
     _ , LpImg, _, cor = detect_lp(wpod_net, vehicle, bound_dim, lp_threshold=0.5)
     return vehicle, LpImg, cor
 
-# test_image_path = "stock.jpg"
-# vehicle, LpImg, cor = get_plate(test_image_path)
+def get_text_ocr(image_path:str) -> str:
+    vehicle, LpImg, cor = get_plate(image_path)
+    value = np.array(LpImg[0], dtype=np.float32)
+    pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert('RGB')
+    pred_img.save('newimage.jpg')
+    #cv2.imwrite("newimage.jpg", LpImg[0])
+    image = Image.open("newimage.jpg")
+    # Extracting text from image
+    custom_config = r"-l eng --oem 3 --psm 6"
+    text = pytesseract.image_to_string(image, config=custom_config)
 
-# fig = plt.figure(figsize=(12,6))
-# #grid = gridspec.GridSpec(ncols=2,nrows=1,figure=fig)
-# #fig.add_subplot(grid[0])
-# #plt.axis(False)
-# #plt.imshow(vehicle)
-# grid = gridspec.GridSpec(ncols=2,nrows=1,figure=fig)
-# print(vehicle.shape)
-# fig.add_subplot(grid[1])
-# plt.axis(False)
-# plt.imshow(LpImg[0])
+    # Remove symbol if any
+    characters_to_remove = "!()@—*“>+-/,'|£#%$&^_~"
+    new_string = text
+    for character in characters_to_remove:
+        new_string = new_string.replace(character, "")
 
-
-
+    # Converting string into list to dislay extracted text in seperate line
+    new_string = new_string.split("\n")
+    return new_string[0]
 
