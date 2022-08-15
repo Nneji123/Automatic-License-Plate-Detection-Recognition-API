@@ -7,6 +7,7 @@ import io
 from PIL import Image
 import cv2
 import warnings
+from .helpers import get_plate, load_model, preprocess_image
 import onnxruntime 
 
 
@@ -25,14 +26,11 @@ async def root(file: UploadFile = File(...)):
     
 
     contents = io.BytesIO(await file.read())
-    new_img = Image.open(contents) 
-    x = np.array(new_img,dtype=np.float32) 
-    x = np.expand_dims(x, axis=0)
-    sess = onnxruntime.InferenceSession("./src/models/model.onnx")
-    x = x if isinstance(x, list) else [x]
-    feed = dict([(input.name, x[n]) for n, input in enumerate(sess.get_inputs())])
-    pred_onnx = sess.run(None,  feed)[0]
-    pred = np.squeeze(pred_onnx)
+    file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR) 
+    #res, im_png = cv2.imencode(".png", im_rgb)
+    cv2.imwrite("image.jpg", img)
+    vehicle, LpImg, cor = get_plate("image.jpg")
     im_rgb = cv2.cvtColor(pred[:, :, 0], cv2.COLOR_BGR2RGB)
     res, im_png = cv2.imencode(".png", im_rgb)
     return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
