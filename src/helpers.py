@@ -57,9 +57,9 @@ def get_text_ocr(image_path: str) -> str:
     vehicle, LpImg, cor = get_plate(image_path)
     value = np.array(LpImg[0], dtype=np.float32)
     pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
-    pred_img.save("newimage.jpg")
+    pred_img.save("./images/newimage.jpg")
     # cv2.imwrite("newimage.jpg", LpImg[0])
-    image = Image.open("newimage.jpg")
+    image = Image.open("./images/newimage.jpg")
     # Extracting text from image
     custom_config = r"-l eng --oem 3 --psm 6"
     text = pytesseract.image_to_string(image, config=custom_config)

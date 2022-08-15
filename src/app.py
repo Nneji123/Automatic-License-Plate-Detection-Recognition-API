@@ -99,7 +99,7 @@ async def get_ocr(request: Request, file: UploadFile = File(...)):
             file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             cv2.imwrite("./images/image.jpg", img)
-            vehicle, LpImg, cor = get_plate("image.jpg")
+            vehicle, LpImg, cor = get_plate("./images/image.jpg")
             value = np.array(LpImg[0], dtype=np.float32)
             pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
             pred_img.save("./images/newimage.jpg")
