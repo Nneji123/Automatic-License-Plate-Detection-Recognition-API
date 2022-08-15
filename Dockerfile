@@ -20,4 +20,4 @@ COPY . .
 
 EXPOSE 8000:8000
 
-CMD uvicorn src.app:app --reload --port 8000
+CMD cd src && uvicorn app:app --reload --port 8000

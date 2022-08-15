@@ -1,15 +1,14 @@
 import os
 import uvicorn
-from fastapi import FastAPI, File, UploadFile, Response
+from fastapi import FastAPI, File, UploadFile, Response, Request
 from fastapi.responses import StreamingResponse, FileResponse
+from fastapi.templating import Jinja2Templates
 import numpy as np
 import io
 from PIL import Image
 import cv2
-import warnings
 import pytesseract
 from helpers import get_plate, load_model, preprocess_image
-import onnxruntime 
 
 
 
@@ -18,19 +17,19 @@ app = FastAPI(
     description="""Automatic Vehicle License Plate Recognition API."""
 )
 
+templates = Jinja2Templates(directory="templates")
+
+# favicon_path = "./images/favicon.ico"
 
 
-favicon_path = "./images/favicon.ico"
-
-
-@app.get("/favicon.ico", include_in_schema=False)
-async def favicon():
-    return FileResponse(favicon_path)
+# @app.get("/favicon.ico", include_in_schema=False)
+# async def favicon():
+#     return FileResponse(favicon_path)
 
 
 
-@app.get('/')
-async def home():
+@app.get('/running')
+async def running():
     note = """
     AVLPR API 📚
     Automatic Vehicle License Plate Recognition API!
@@ -83,7 +82,7 @@ async def get_ocr(file: UploadFile = File(...)) -> str:
     new_string = new_string.split("\n")
     return new_string[0]
 
-@app.get("/ocr")
+@app.get("/")
 def home(request: Request):
     return templates.TemplateResponse("ocr.html", {"request": request})
 
