@@ -3,6 +3,7 @@ import tensorflow as tf
 import cv2
 import numpy as np
 from .utils import detect_lp
+from tensorflow.keras.models  import model_from_json
 from os.path import splitext,basename
 from sklearn.preprocessing import LabelEncoder
 from tensorflow import keras
@@ -20,7 +21,7 @@ def load_model(path):
         return model
     except Exception as e:
         print(e)
-wpod_net_path = "./models/wpod-net.json"
+wpod_net_path = "./src/models/wpod-net.json"
 wpod_net = load_model(wpod_net_path)
 
 def preprocess_image(image_path,resize=False):

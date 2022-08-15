@@ -1,7 +1,9 @@
 opencv-python-headless==4.6.0.66
 tensorflow-cpu
 keras
+matplotliv
 pytesseract==0.3.7
 fastapi[all]
 onnxruntime
 tf2onnx
+sklearn
