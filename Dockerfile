@@ -1,12 +1,23 @@
-FROM python:3.8
+FROM python:3.8.13-slim-bullseye
 
-RUN apt-get update
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+WORKDIR /app
 
-RUN pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html --upgrade
+RUN apt-get -y update  && apt-get install -y \
+  python3-dev \
+  apt-utils \
+  python-dev \
+  tesseract-ocr \
+  build-essential \
+&& rm -rf /var/lib/apt/lists/*
 
-COPY . /app
-WORKDIR /app    
+RUN pip install --upgrade setuptools 
+    
+COPY requirements.txt .
 
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+RUN pip install -r requirements.txt 
+
+COPY . .
+
+EXPOSE 8000:8000
+
+CMD uvicorn src.app:app --reload --port 8000

@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: simple-python-server2
+    command: ./docker.sh
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
