@@ -3,6 +3,4 @@ tensorflow-cpu
 keras
 pytesseract==0.3.7
 fastapi[all]
-onnxruntime
-tf2onnx
 sklearn

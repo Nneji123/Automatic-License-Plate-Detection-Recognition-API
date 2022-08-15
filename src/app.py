@@ -12,13 +12,31 @@ from .helpers import get_plate, load_model, preprocess_image
 import onnxruntime 
 
 
-app = FastAPI()
+
+app = FastAPI(
+    title="AVLPR API",
+    description="""Automatic Vehicle License Plate Recognition API."""
+)
+
+
+
+favicon_path = "./images/favicon.ico"
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse(favicon_path)
 
 
 
 @app.get('/')
-def home():
-    return {'Title': 'Super Resolution and Colorisation API'}
+async def home():
+    note = """
+    AVLPR API 📚
+    Automatic Vehicle License Plate Recognition API!
+    Note: add "/redoc" to get the complete documentation.
+    """
+    return note
 
 
 # endpoint for just enhancing the image
