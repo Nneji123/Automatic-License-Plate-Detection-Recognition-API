@@ -1,0 +1,6 @@
+icevision[all]==0.12.0 -U
+yolov5-icevision -U
+awscli -U
+boto3==1.21.32 -U
+pytesseract==0.3.7
+fastapi[all]
