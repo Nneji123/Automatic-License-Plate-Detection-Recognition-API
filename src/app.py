@@ -6,8 +6,6 @@ import numpy as np
 import io
 from PIL import Image
 import cv2
-from matplotlib import pyplot as plt
-import matplotlib.gridspec as gridspec
 import warnings
 import pytesseract
 from .helpers import get_plate, load_model, preprocess_image
@@ -34,13 +32,9 @@ async def predict_plot_image(file: UploadFile = File(...)):
     #res, im_png = cv2.imencode(".png", im_rgb)
     cv2.imwrite("image.jpg", img)
     vehicle, LpImg, cor = get_plate("image.jpg")
-    fig = plt.figure(figsize=(12,6))
-    grid = gridspec.GridSpec(ncols=2,nrows=1,figure=fig)
-    print(vehicle.shape)
-    fig.add_subplot(grid[1])
-    plt.axis(False)
-    plt.imshow(LpImg[0])
-    plt.savefig("newimage.jpg")
+    arr = np.array(LpImg[0], dtype=np.float32)
+    pred_img = Image.fromarray((arr * 255).astype(np.uint8)).convert('RGB')
+    pred_img.save('newimage.jpg')
     #cv2.imwrite("newimage.jpg", LpImg[0])
     return FileResponse("newimage.jpg", media_type="image/jpg")
 
@@ -50,19 +44,13 @@ async def get_ocr(file: UploadFile = File(...)) -> str:
     contents = io.BytesIO(await file.read())
     file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR) 
-    #res, im_png = cv2.imencode(".png", im_rgb)
     cv2.imwrite("image.jpg", img)
     vehicle, LpImg, cor = get_plate("image.jpg")
-    fig = plt.figure(figsize=(12,6))
-    grid = gridspec.GridSpec(ncols=2,nrows=1,figure=fig)
-    print(vehicle.shape)
-    fig.add_subplot(grid[1])
-    plt.axis(False)
-    plt.imshow(LpImg[0])
-    plt.savefig("newimage.jpg")
+    value = np.array(LpImg[0], dtype=np.float32)
+    pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert('RGB')
+    pred_img.save('newimage.jpg')
     #cv2.imwrite("newimage.jpg", LpImg[0])
     image = Image.open("newimage.jpg")
-
     # Extracting text from image
     custom_config = r"-l eng --oem 3 --psm 6"
     text = pytesseract.image_to_string(image, config=custom_config)
@@ -75,5 +63,5 @@ async def get_ocr(file: UploadFile = File(...)) -> str:
 
     # Converting string into list to dislay extracted text in seperate line
     new_string = new_string.split("\n")
-    return new_string
+    return new_string[0]
 
