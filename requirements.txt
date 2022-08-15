@@ -1,5 +1,5 @@
-icevision[all]==0.12.0
-yolov5-icevision 
+tensorflow-cpu
+keras
 pytesseract==0.3.7
 fastapi[all]
 onnxruntime
