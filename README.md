@@ -319,9 +319,9 @@ Click the button below to deploy the Application to railway
 
 
 ## TODO
-- [ ] add tests
+- [ ] add application flow diagram
 - [x] update documentation
 - [x] deployment
-- [ ] github actions
-- [ ] update api
-- [ ] update app
+- [x] github actions
+- [x] update api
+- [ ] change app heading color
