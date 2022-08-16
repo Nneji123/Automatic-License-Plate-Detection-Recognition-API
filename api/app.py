@@ -46,11 +46,15 @@ async def predict_plot_image(file: UploadFile = File(...)):
     file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     cv2.imwrite("./images/image.jpg", img)
-    vehicle, LpImg, cor = get_plate("./images/image.jpg")
-    arr = np.array(LpImg[0], dtype=np.float32)
-    pred_img = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
-    pred_img.save("./images/newimage.jpg")
-    return FileResponse("./images/newimage.jpg", media_type="image/jpg")
+    try:
+        vehicle, LpImg, cor = get_plate("./images/image.jpg")
+        arr = np.array(LpImg[0], dtype=np.float32)
+        pred_img = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
+        pred_img.save("./images/newimage.jpg")
+        return FileResponse("./images/newimage.jpg", media_type="image/jpg")
+    except AssertionError:
+        vals = "No License plate found"
+        return vals
 
 
 @app.post("/detect")
@@ -60,21 +64,25 @@ async def get_ocr(file: UploadFile = File(...)) -> str:
     file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     cv2.imwrite("./images/image.jpg", img)
-    vehicle, LpImg, cor = get_plate("./images/image.jpg")
-    value = np.array(LpImg[0], dtype=np.float32)
-    pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
-    pred_img.save("./images/newimage.jpg")
-    image = Image.open("./images/newimage.jpg")
-    # Extracting text from image
-    custom_config = r"-l eng --oem 3 --psm 6"
-    text = pytesseract.image_to_string(image, config=custom_config)
+    try:
+        vehicle, LpImg, cor = get_plate("./images/image.jpg")
+        value = np.array(LpImg[0], dtype=np.float32)
+        pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
+        pred_img.save("./images/newimage.jpg")
+        image = Image.open("./images/newimage.jpg")
+        # Extracting text from image
+        custom_config = r"-l eng --oem 3 --psm 6"
+        text = pytesseract.image_to_string(image, config=custom_config)
 
-    # Remove symbol if any
-    characters_to_remove = "!()@—*“>+-/,'|£#%$&^_~"
-    new_string = text
-    for character in characters_to_remove:
-        new_string = new_string.replace(character, "")
+        # Remove symbol if any
+        characters_to_remove = "!()@—*“>+-/,'|£#%$&^_~"
+        new_string = text
+        for character in characters_to_remove:
+            new_string = new_string.replace(character, "")
 
-    # Converting string into list to dislay extracted text in seperate line
-    new_string = new_string.split("\n")
-    return new_string[0]
+        # Converting string into list to dislay extracted text in seperate line
+        new_string = new_string.split("\n")
+        return new_string[0]
+    except AssertionError:
+        vals = "No License Plate found."
+        return vals
