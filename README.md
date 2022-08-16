@@ -91,7 +91,11 @@ In this project, a neural network model was built using Tensorflow. The model de
 ## Proposed Solution
 
 ## API Demo
+![ezgif com-gif-maker2](https://user-images.githubusercontent.com/101701760/184884561-7faffb87-71a1-41e5-92fd-97860ea61507.gif)
+
+
 ## HTML Web App Demo
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/101701760/184884513-66d5cd1e-9a0f-44ce-86dc-abfc8d70bc70.gif)
 
 ## How to run the Application
 <details> 
