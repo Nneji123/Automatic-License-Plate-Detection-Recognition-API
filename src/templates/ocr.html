@@ -12,10 +12,10 @@
   <link rel="shortcut icon" type="image/x-icon" sizes="32x32" href="./favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
   <meta name="google-site-verification" content="xwmmD9rBATBeymKUYCM2ytMO_VJv8MDY5gJORcFulY8">
-  <title>AVLPR API| Automatic Vehicle License Plate Recognition App</title>
+  <title>AVNPR API | Automatic Vehicle Number Plate Recognition App</title>
   <!-- Todo: add some coding keywords below - e.g: (javascript, yourusername, etc) -->
   <meta name="keywords" content="python, nlp, speech, text summarizer, auto
-      correct ">
+      correct, pytesseract ">
   <!-- Todo: improve your SEO by adding a small description of you -->
   <meta name="description" content="An Automatic Vehicle License Plate Recognition App built with YoloV4, FastAPI, HTML and CSS">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -28,12 +28,13 @@
     /* Remove the navbar's default margin-bottom and rounded borders */
     body {
       background-color: #e2e2e2;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23cecbd3' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      
 
       margin: 0;
       justify-content: center;
       align-items: center;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Rajdhani';
+      font-size:28px;
     }
 
     .navbar {
@@ -49,13 +50,13 @@
     /* Set gray background color and 100% height */
     .sidenav {
       padding-top: 20px;
-      background-color: #f1f1f1;
+      background-color: white;
       height: 100%;
     }
 
     /* Set black background color, white text and some padding */
     footer {
-      background-color: #555;
+      background-color: white;
       color: white;
       padding: 15px;
     }
@@ -76,40 +77,35 @@
 
 <body>
 
-  <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand"></a><img src="./favicon.ico" width="70" height="50" alt="Logo">
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="./">Home</a></li>
-        </ul>
-
-      </div>
-    </div>
-  </nav>
-
   <div class="container-fluid text-center">
 
-    <div class="col-sm-8 text-left">
-      <h1>AVNPR App</h1>
+    <div class="fixed block">
+      <h1 class="fixed round block">AVNPR App</h1>
 
-      <p>An app for Automatic Vehicle Number Plate Recognition.</p> 
+      <p>AVNPR(Automatic Vehicle Number Plate Recognition) App. This app recognises and extracts the number plate of a vehicle from a given input image.
 
+      </p>
+
+      </p>
+      <p>You can check out the Github <a href="https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API" target="_blank">Repository</a> for
+        more
+        information.
+      <p>You can also visit the API <a href="http://wordsai-api.herokuapp.com" target="_blank">documentation.</a></p>
+      <p>License: <a href="https://github.com/Nneji123/utomatic-License-Plate-Detection-Recognition-API/blob/main/LICENSE">MIT</a>
+      </p>  
+    
+    </p>
+
+
+    <h2><strong> Try it out!</strong></h2>
         <div class="lg:w-3/6 mx-auto">
-          <div class="rounded-lg h-64 overflow-hidden">
+          <div class="rounded-lg h-64 ">
             <form action="/ocr_parser" method="post" enctype="multipart/form-data">
               <div class="relative mb-1">
-                  <input placeholder="PDF" type="file" id="file" name="file" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
+                  <input placeholder="JPG" type="file" id="file" name="file" class="block" required>
                 </div>
                 <input
-                  class="mt-2 text-white bg-blue-500 border-0 py-1 px-4 focus:outline-none hover:bg-blue-400 rounded text-lg"
+                  class="block"
                   type="submit"
                   value="Extract Text"
                 />
@@ -122,7 +118,7 @@
               <div class="h-full bg-gray-200 p-8 rounded">
 
                 <h2 class="text-lg text-gray-700 font-bold mb-3">Extracted Text</h2>
-                <h3 class="text-gray-700 text-base">{{sumary}}</h3>
+                <h3 class="fixed accent block">{{sumary}}</h3>
         </div>
              {% endif %}
         </div>
@@ -131,19 +127,6 @@
         </div>
       </div>
     </section>
-    <footer class="container-fluid text-center">
-      <p style="color:white;font-size:18px;">Made by Ifeanyi Nneji</p>
-      <a href="https://medium.com/@ifeanyinneji777" target="_blank">
-        <i class="fab fa-medium fa-2x" aria-hidden="true" style="color:white !important;"></i>
-      </a>
-      <a href="https://twitter.com/Neji_14" target="_blank">
-        <i class="fab fa-twitter fa-2x" aria-hidden="true" style="color:white !important;"></i>
-      </a>
-      <a href="https://github.com/Nneji123" target="_blank">
-        <i class="fab fa-github fa-2x" aria-hidden="true" style="color:white !important;"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/ifeanyi-nneji/" target="_blank">
-        <i class="fab fa-linkedin fa-2x" aria-hidden="true" style="color:white !important;"></i>
-    </footer>
+
   </body>
 </html>
