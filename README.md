@@ -1,7 +1,7 @@
 <h1 align="center">Automatic Vehicle Number Plate Recognition</h1>
 
 <p align="center">
-  <img width="300" height="300" src="https://user-images.githubusercontent.com/101701760/182023528-7da7205e-1fc6-49c9-832d-b3f40a68eae8.png">
+  <img width="700" height="300" src="https://user-images.githubusercontent.com/101701760/184875740-365bf49c-03f0-4d85-9001-40608353a212.png">
 </p>
 
 
