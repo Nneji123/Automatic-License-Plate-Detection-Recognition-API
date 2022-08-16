@@ -13,7 +13,7 @@
 ![hosted](https://img.shields.io/badge/Heroku-430098?style=flat&logo=heroku&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-blue?style=flat&logo=docker&logoColor=white)
 [![Gitpod](https://img.shields.io/badge/Gitpod-orange?style=flat&logo=gitpod&logoColor=white)](https://gitpod.io/#https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API)
-![reposize](https://img.shields.io/github/repo-size/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git)
+![reposize](https://img.shields.io/github/repo-size/Nneji123/Automatic-License-Plate-Detection-Recognition-API)
 
 
 ## About
