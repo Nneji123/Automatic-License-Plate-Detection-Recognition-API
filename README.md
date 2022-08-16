@@ -25,6 +25,10 @@ API Documentation: http://avnprapi.herokuapp.com/docs
 
 Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avnprapi
 
+## Contributors
+- **[NNEJI IFEANYI DANIEL](https://github.com/Nneji123)**
+
+
 ## Table of Contents
   * [About](#about)
   * [Table of Contents](#table-of-contents)
@@ -44,7 +48,7 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 
 ## Repository File Structure
 ```bash
-├── api
+├── api # API Files
 │   ├── app.py
 │   ├── docker-compose.yml
 │   ├── Dockerfile
@@ -58,8 +62,8 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 │   └── utils.py
 ├── LICENSE
 ├── README.md
-├── sample_images
-├── src
+├── sample_images # Test images
+├── src # HTML Web App Files
 │   ├── app.py
 │   ├── docker-compose.yml
 │   ├── Dockerfile
@@ -72,15 +76,22 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 │   ├── templates
 │   │   └── ocr.html
 │   └── utils.py
-└── tests
+└── tests 
 ```
+
+
+
 
 ## Features
 This application uses machine learning algorithms to detect and recognise number plate or license plates of cars in an image.
 
-## Demo
-### API Demo
-### HTML App Demo
+## Problem Statement
+In this project, a neural network model was built using Tensorflow. The model detects if a plant is suffering from a disease(Rust or Powdery Mildew). The model was then deployed as an API using the FastAPI framework.
+
+## Proposed Solution
+
+## API Demo
+## HTML Web App Demo
 
 ## How to run the Application
 <details> 
