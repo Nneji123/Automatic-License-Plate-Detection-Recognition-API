@@ -22,4 +22,4 @@ COPY . .
 
 #CMD uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
-CMD gunicorn -w 3 -k uvicorn.workers.UvicornWorker app:app --bind 0.0.0.0:$PORT
+CMD gunicorn -w 1 -k uvicorn.workers.UvicornWorker app:app --bind 0.0.0.0:$PORT
