@@ -5,8 +5,8 @@ import sys
 import cv2
 import numpy as np
 import pytesseract
-from fastapi import FastAPI, File, Request, Response, UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi import FastAPI, File, Request, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from PIL import Image
 
