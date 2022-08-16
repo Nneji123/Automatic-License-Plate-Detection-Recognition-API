@@ -30,19 +30,22 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 
 
 ## Table of Contents
-  * [About](#about)
-  * [Table of Contents](#table-of-contents)
-    + [Features](#features)
-  * [Repository File Structure](#repository-file-structure)
-  * [Demo](#demo)
-    + [API Demo](#api-demo)
-    + [HTML App Demo](#html-app-demo)
-    + [Streamlit App Demo](#streamlit-app-demo)
-  * [How to run the Application](#how-to-run-the-application)
-  * [Tests](#tests)
-  * [Deployment](#deployment)
-- [Todo](#todo)
+- [About](#about)
+- [Contributors](#contributors)
+- [Repository File Structure](#repository-file-structure)
+- [Problem Statement](#problem-statement)
+- [Proposed Solution](#proposed-solution)
+- [API Demo](#api-demo)
+- [HTML Web App Demo](#html-web-app-demo)
+- [How to run the Application](#how-to-run-the-application)
+- [Tests](#tests)
+- [Deployment](#deployment)
+- [References](#references)
 - [License](#license)
+- [TODO](#todo)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 
 
@@ -79,16 +82,25 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 └── tests 
 ```
 
-
-
-
-## Features
-This application uses machine learning algorithms to detect and recognise number plate or license plates of cars in an image.
-
 ## Problem Statement
-In this project, a neural network model was built using Tensorflow. The model detects if a plant is suffering from a disease(Rust or Powdery Mildew). The model was then deployed as an API using the FastAPI framework.
+>The number plate recognition (NPR) system is one of the categories of smart
+transportation and detection mechanism (STDM). This is a combination of the technology
+in which the application enables the system to detect and automatically read the license id
+of number plate of vehicle from digitally captured images. Automatically capturing the
+license plate is the process of detecting and transforming the pixels data of a digital image
+into the plain text data or ASCII text of the number plate. Our project contains a method
+for the vehicle number plate recognition from the image using mathematical morphological
+operations (erosion, dilation).
 
 ## Proposed Solution
+>The main objective is to use and combine different
+morphological operations in such a way that the license plate of the certain vehicle can be
+detected and translated effectively. This is based on various operation such as image
+improvement, Gray scale transformation, Bilateral Filtering edge detection and getting the
+number plate from the picture of vehicle. After the completion of the above-mentioned
+steps, now the process of segmentation is being applied to detect the text present on
+number plate by making use ofmatching of template and OCR. This system is able to
+detect the license number accurately as well as quickly from the vehicle’s picture. This application uses machine learning algorithms to detect and recognise number plate or license plates of cars in an image. 
 
 ## API Demo
 ![ezgif com-gif-maker2](https://user-images.githubusercontent.com/101701760/184884561-7faffb87-71a1-41e5-92fd-97860ea61507.gif)
@@ -297,6 +309,8 @@ Click the button below to deploy the Application to railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/k_WXDI?referralCode=ZYOf2M)
 
 </details>
+
+## References
 
 
 
