@@ -8,6 +8,7 @@
 [![Language](https://img.shields.io/badge/Python-darkblue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![HTML](https://img.shields.io/badge/HTML-black.svg?style=flat&logo=html5&logoColor=white)](http://avnprapp.herokuapp.com)
 [![CSS](https://img.shields.io/badge/CSS-yellow.svg?style=flat&logo=css3&logoColor=white)](http://avnprapp.herokuapp.com)
+[![Framework](https://img.shields.io/badge/Keras-darkred.svg?style=flat&logo=keras&logoColor=white)](http://www.Keras.org/news.html)
 [![Framework](https://img.shields.io/badge/FastAPI-darkgreen.svg?style=flat&logo=fastapi&logoColor=white)](https://https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API-api.herokuapp.com/docs)
 ![hosted](https://img.shields.io/badge/Heroku-430098?style=flat&logo=heroku&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-blue?style=flat&logo=docker&logoColor=white)
@@ -21,6 +22,8 @@
 HTML Web App: http://avnprapp.herokuapp.com
 
 API Documentation: http://avnprapi.herokuapp.com/docs
+
+Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avnprapi
 
 ## Table of Contents
   * [About](#about)
@@ -263,6 +266,13 @@ http://3.95.202.74:80/docs**
 
 **You can also watch this video for a more in depth explanation on how to deploy a FastAPI application on AWS EC2:**
 [![How to deploy FastAPI on AWS](https://youtube-md.vercel.app/SgSnz7kW-Ko/640/360)](https://www.youtube.com/watch?v=SgSnz7kW-Ko)
+</details>
+
+<details> 
+  <summary><b>Deploying the Application with AWS Lightsail</b></summary>
+
+To deploy the application using aws Lightsail just watch the video below and follow the steps.
+
 </details>
 
 <details>
