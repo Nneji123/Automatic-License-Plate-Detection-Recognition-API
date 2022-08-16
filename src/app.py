@@ -1,6 +1,8 @@
 import io
 import os
 import sys
+from io import BytesIO
+import base64
 
 import cv2
 import numpy as np
@@ -18,7 +20,7 @@ sys.path.append(os.path.abspath(os.path.join("..", "config")))
 app = FastAPI(
     title="AVNPR API",
     description="""Automatic Vehicle Number Plate Recognition API.""",
-        docs_url=None,
+    docs_url=None,
     redoc_url=None
 )
 
@@ -62,8 +64,8 @@ async def get_ocr(request: Request, file: UploadFile = File(...)):
             try:
                 vehicle, LpImg, cor = get_plate("./images/image.jpg")
                 value = np.array(LpImg[0], dtype=np.float32)
-                pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
-                pred_img.save("./images/newimage.jpg")
+                wordcloud = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
+                wordcloud.save("./images/newimage.jpg")
 
                 image = Image.open("./images/newimage.jpg")
 
@@ -79,11 +81,23 @@ async def get_ocr(request: Request, file: UploadFile = File(...)):
 
                 # Converting string into list to dislay extracted text in seperate line
                 new_string = new_string.split("\n")
+                word_cloud = get_plate_img()
                 return templates.TemplateResponse(
                     "ocr.html", {"request": request, "sumary": new_string[0]}
                 )
             except AssertionError:
                 vals = "No License Plate Found"
                 return templates.TemplateResponse(
-                    "ocr.html", {"request": request, "sumary": vals }
+                    "ocr.html", {"request": request, "sumary": vals}
                 )
+
+def get_plate_img():
+    vehicle, LpImg, cor = get_plate("./images/image.jpg")
+    arr = np.array(LpImg[0], dtype=np.float32)
+    wordcloud = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
+    wordcloud.save("./images/gen.png")
+    
+@app.get('/gen.png')
+async def favicon():
+    file_name = "./images/gen.png"
+    return FileResponse(path=file_name)
