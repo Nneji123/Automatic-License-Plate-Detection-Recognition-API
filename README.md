@@ -101,14 +101,6 @@ steps, now the process of segmentation is being applied to detect the text prese
 number plate by making use ofmatching of template and OCR. This system is able to
 detect the license number accurately as well as quickly from the vehicle’s picture. This application uses machine learning algorithms to detect and recognise number plate or license plates of cars in an image. 
 
-### Application Flow Diagram
-1. Get input image from frontend
-2. Send image to model backend 
-3. Detect number plate and save it as an image to temporary directory
-4. Send saved image to ocr(pytesseract)
-5. Recognize the text in the image
-6. Return text to the frontend.
-
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/101701760/185094114-2696c791-1f7c-4921-805c-a839b59af7de.png)
 
 
