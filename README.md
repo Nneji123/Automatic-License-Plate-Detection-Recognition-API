@@ -44,7 +44,6 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 - [License](#license)
 - [TODO](#todo)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
 
@@ -102,6 +101,15 @@ steps, now the process of segmentation is being applied to detect the text prese
 number plate by making use ofmatching of template and OCR. This system is able to
 detect the license number accurately as well as quickly from the vehicle’s picture. This application uses machine learning algorithms to detect and recognise number plate or license plates of cars in an image. 
 
+### Application Flow Diagram
+1. Get input image from frontend
+2. Send image to model backend 
+3. Detect number plate and save it as an image to temporary directory
+4. Send saved image to ocr(pytesseract)
+5. Recognize the text in the image
+6. Return text to the frontend.
+
+
 ## API Demo
 ![ezgif com-gif-maker2](https://user-images.githubusercontent.com/101701760/184884561-7faffb87-71a1-41e5-92fd-97860ea61507.gif)
 
@@ -116,12 +124,12 @@ detect the license number accurately as well as quickly from the vehicle’s pic
 **To run the application on your local system do the following:**
 1. Clone the repository:
 ```bash
-git clone https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
+git clone https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
 ```
 
 2. Change the directory:
 ```
-cd https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API
+cd Automatic-License-Plate-Detection-Recognition-API
 ```
 
 3. Install the requirements:
@@ -143,12 +151,12 @@ uvicorn app:app --reload --port 8000
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
+git clone https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
 ```
 
 2. Change the directory:
 ```
-cd https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API
+cd Automatic-License-Plate-Detection-Recognition-API
 ```
 
 3. Run the docker compose command
@@ -165,7 +173,7 @@ You should be able to view the application by going to http://localhost:8000/
 
 **Click the button below to start a new development environment:**
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API)
 </details>
 
 ## Tests
@@ -214,12 +222,12 @@ cd .. && cd tests && pytest
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
+git clone https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
 ```
 
 2. Change the directory:
 ```
-cd https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API
+cd Automatic-License-Plate-Detection-Recognition-API
 ```
 
 3. Login to Heroku
@@ -277,11 +285,11 @@ Click the button below to deploy the application.
 
 **4. Connect to your instance and clone your forked repository, an example in my case:**
 ```bash
-git clone https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
+git clone https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API.git
 ```
-**5. cd into your repository which is probably named 'https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API'. You can do that by running:**
+**5. cd into your repository which is probably named 'Automatic-License-Plate-Detection-Recognition-API'. You can do that by running:**
 ```bash
-cd https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API 
+cd Automatic-License-Plate-Detection-Recognition-API 
 ```
 **6. Then run the setup.sh file to get your application up and running:**
 ```bash
@@ -311,11 +319,13 @@ Click the button below to deploy the Application to railway
 </details>
 
 ## References
-
+- [Plate_Detect_and_Recognize](https://github.com/quangnhat185/Plate_detect_and_recognize)
+- [License Plate Detection and Recognition in Unconstrained Scenarios ](https://github.com/sergiomsilva/alpr-unconstrained)
+- [Automatic Vehicle Number Plate Recognition System Using Machine Learning](https://www.researchgate.net/publication/349629053_Automatic_Vehicle_Number_Plate_Recognition_System_Using_Machine_Learning)
 
 
 ## License
-[MIT](https://github.com/Nneji123/https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API/LICENSE)
+[MIT](https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API/LICENSE)
 
 
 ## TODO

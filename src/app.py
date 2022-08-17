@@ -98,6 +98,7 @@ def get_plate_img():
     wordcloud = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
     wordcloud.save("./images/gen.png")
     
+    
 @app.get('/gen.png')
 async def favicon():
     file_name = "./images/gen.png"
