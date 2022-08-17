@@ -109,6 +109,9 @@ detect the license number accurately as well as quickly from the vehicle’s pic
 5. Recognize the text in the image
 6. Return text to the frontend.
 
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/101701760/185094114-2696c791-1f7c-4921-805c-a839b59af7de.png)
+
+
 
 ## API Demo
 ![ezgif com-gif-maker2](https://user-images.githubusercontent.com/101701760/184884561-7faffb87-71a1-41e5-92fd-97860ea61507.gif)
