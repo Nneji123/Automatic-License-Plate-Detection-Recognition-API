@@ -3,6 +3,7 @@ import os
 import sys
 from io import BytesIO
 import base64
+import time
 
 import cv2
 import numpy as np
@@ -100,4 +101,9 @@ def get_plate_img():
 @app.get('/gen.png')
 async def favicon():
     file_name = "./images/gen.png"
+    return FileResponse(path=file_name)
+
+@app.get('/img.jpg')
+async def background():
+    file_name = "./images/img.jpg"
     return FileResponse(path=file_name)

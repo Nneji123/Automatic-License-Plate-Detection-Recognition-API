@@ -12,9 +12,9 @@
   <link rel="shortcut icon" type="image/x-icon" sizes="32x32" href="./favicon.ico">
   <link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
   <meta name="google-site-verification" content="xwmmD9rBATBeymKUYCM2ytMO_VJv8MDY5gJORcFulY8">
-  <title>AVNPR API | Automatic Vehicle Number Plate Recognition App</title>
+  <title>AVNPR APP | Automatic Vehicle Number Plate Recognition App</title>
   <!-- Todo: add some coding keywords below - e.g: (javascript, yourusername, etc) -->
-  <meta name="keywords" content="python, nlp, speech, text summarizer, auto
+  <meta name="keywords" content="python, number plate, speech, text summarizer, auto
       correct, pytesseract ">
   <!-- Todo: improve your SEO by adding a small description of you -->
   <meta name="description" content="An Automatic Vehicle License Plate Recognition App built with YoloV4, FastAPI, HTML and CSS">
@@ -28,6 +28,10 @@
     /* Remove the navbar's default margin-bottom and rounded borders */
     body {
       background-color: #e2e2e2;
+      background-image: url('img.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
       
 
       margin: 0;
@@ -80,7 +84,7 @@
   <div class="container-fluid text-center">
 
     <div class="fixed block">
-      <h1 class="fixed round block">AVNPR App</h1>
+      <h1 class="fixed round accent block">AVNPR App</h1>
 
       <p>AVNPR(Automatic Vehicle Number Plate Recognition) App. This app recognises and extracts the number plate of a vehicle from a given input image.
 
@@ -107,7 +111,7 @@
                 <input
                   class="block"
                   type="submit"
-                  value="Extract Text"
+                  value="Extract Number Plate"
                 />
               </div>
             </form>
