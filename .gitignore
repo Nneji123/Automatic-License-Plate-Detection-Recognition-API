@@ -127,4 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-*.pt
+traced_model.pt
+weights.pt

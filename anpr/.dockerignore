@@ -1,2 +1,3 @@
 traced_model.pt
 weights.pt
+__pycache__

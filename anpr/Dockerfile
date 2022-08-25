@@ -15,8 +15,7 @@ COPY . .
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu \
   && pip install -r requirements.txt
 
-EXPOSE 8000:8000
 
 RUN python download.py
 
-CMD uvicorn app:app --host 0.0.0.0 --port 8000
+CMD uvicorn app:app --host=0.0.0.0 --port=${PORT:-5000}
