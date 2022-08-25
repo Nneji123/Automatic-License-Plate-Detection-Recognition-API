@@ -267,29 +267,9 @@ def get_plates_from_video(source):
     video.release()
     export.release()
 
-    # Compressing the output video for smaller size and web compatibility.
+    #Compressing the output video for smaller size and web compatibility.
     output = f'{Path(source).stem}_detected{Path(source).suffix}'
-    os.system(f'ffmpeg -y -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 1 -c:a aac -f mp4 /dev/null && ffmpeg -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 2 -c:a aac -movflags faststart {output}')
-    os.system(f'rm -rf {temp} ffmpeg2pass-0.log ffmpeg2pass-0.log.mbtree')
+    # os.system(f'ffmpeg -y -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 1 -c:a aac -f mp4 /dev/null && ffmpeg -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 2 -c:a aac -movflags faststart {output}')
+    # os.system(f'rm -rf {temp} ffmpeg2pass-0.log ffmpeg2pass-0.log.mbtree')
 
     return output
-
-# with gr.Blocks() as demo:
-#     gr.Markdown('### <h3 align="center">Automatic Number Plate Recognition</h3>')
-#     gr.Markdown('This AI was trained to detect and recognize number plates on vehicles.')
-#     with gr.Tabs():
-#         with gr.TabItem('Image'):
-#             with gr.Row():
-#                 image_input = gr.Image()
-#                 image_output = gr.Image()
-#                 image_input.change(get_plates_from_image, inputs=image_input, outputs=image_output)
-#             gr.Examples([['examples/test_image_1.jpg'], ['examples/test_image_2.jpg'], ['examples/test_image_3.png'], ['examples/test_image_4.jpeg']], [image_input], image_output, get_plates_from_image, cache_examples=True)
-#         with gr.TabItem('Video'):
-#             with gr.Row():
-#                 video_input = gr.Video(format='mp4')
-#                 video_output = gr.Video(format='mp4')
-#                 video_input.change(get_plates_from_video, inputs=video_input, outputs=video_output)
-#             gr.Examples([['examples/test_video_1.mp4']], [video_input], video_output, get_plates_from_video, cache_examples=True)
-#     gr.Markdown('[@itsyoboieltr](https://github.com/itsyoboieltr)')
-
-# demo.launch()

@@ -11,10 +11,13 @@ if not os.path.isfile('weights.pt'):
 #     os.system('rm -rf examples.tar.gz')
 #     print("Downloaded files!")
 
-from detections import get_plates_from_image
+from detections import get_plates_from_image, get_plates_from_video
 from PIL import Image
 import numpy as np
-image = Image.open('image.jpg')
+image = Image.open('./images/image.jpg')
 image = np.array(image)
 img = get_plates_from_image(image)
 print("Downloaded and loaded all files!")
+
+imgs = get_plates_from_video('./images/input.mp4')
+print('Saved video!')
