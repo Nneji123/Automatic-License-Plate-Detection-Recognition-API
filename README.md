@@ -112,6 +112,10 @@ detect the license number accurately as well as quickly from the vehicle’s pic
 ## HTML Web App Demo
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/101701760/184884513-66d5cd1e-9a0f-44ce-86dc-abfc8d70bc70.gif)
 
+## Inference on Video Demo
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/101701760/186735810-2a1f93d6-9b41-45e5-8a33-57dc09ca3ffd.gif)
+
+
 ## How to run the Application
 <details> 
   <summary><b>Running on Local Machine</b></summary>
