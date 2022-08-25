@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from fastapi import FastAPI, File, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, PlainTextResponse, StreamingResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from PIL import Image
 from detections import get_plates_from_image, get_text_from_image
@@ -83,10 +83,7 @@ async def background():
     file_name = "./images/img.jpg"
     return FileResponse(path=file_name)
 
-@app.get("/video")
+@app.get("/mygif.gif")
 async def video_endpoint():
-    def iterfile():
-        with open(video_path, mode="rb") as file_like:
-            yield from file_like
-
-    return StreamingResponse(iterfile(), media_type="video/mp4")
+    file_name = "mygif.gif"
+    return FileResponse(path=file_name)
