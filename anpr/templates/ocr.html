@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!--Import Google Icon Font-->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" sizes="32x32" href="./favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
+  <meta name="google-site-verification" content="xwmmD9rBATBeymKUYCM2ytMO_VJv8MDY5gJORcFulY8">
+  <title>AVNPR APP | Automatic Vehicle Number Plate Recognition App</title>
+  <!-- Todo: add some coding keywords below - e.g: (javascript, yourusername, etc) -->
+  <meta name="keywords" content="python, number plate, speech, text summarizer, auto
+      correct, pytesseract ">
+  <!-- Todo: improve your SEO by adding a small description of you -->
+  <meta name="description" content="An Automatic Vehicle License Plate Recognition App built with YoloV4, FastAPI, HTML and CSS">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    body {
+      background-color: #e2e2e2;
+      background-image: url('img.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      
+
+      margin: 0;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Rajdhani';
+      font-size:28px;
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {
+      height: 450px
+    }
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: white;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: white;
+      color: white;
+      padding: 15px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+
+      .row.content {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container-fluid text-center">
+
+    <div class="fixed block">
+      <h1 class="fixed round accent block">AVNPR App</h1>
+
+      <p>AVNPR(Automatic Vehicle Number Plate Recognition) App. This app recognises and extracts the number plate of a vehicle from a given input image.
+
+      </p>
+
+      </p>
+      <p>You can check out the Github <a href="https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API" target="_blank">Repository</a> for
+        more
+        information.
+      <p>You can also visit the API <a href="http://avnprapi.herokuapp.com" target="_blank">documentation.</a></p>
+      <p>License: <a href="https://github.com/Nneji123/Automatic-License-Plate-Detection-Recognition-API/blob/main/LICENSE">MIT</a>
+      </p>  
+    
+    </p>
+
+
+    <h2><strong> Try it out!</strong></h2>
+        <div class="lg:w-3/6 mx-auto">
+          <div class="rounded-lg h-64 ">
+            <form action="/ocr_parser" method="post" enctype="multipart/form-data">
+              <div class="relative mb-1">
+                  <input placeholder="JPG" type="file" id="file" name="file" class="block" required>
+                </div>
+                <input
+                  class="block"
+                  type="submit"
+                  value="Extract Number Plate"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="flex flex-col sm:flex-row mt-0 lg:w-1/2 mr-auto ml-auto">
+             {% if sumary %}
+              
+              <div class="h-full bg-gray-200 p-8 rounded">
+
+                <h2 class="text-lg text-gray-700 font-bold mb-3">Extracted Number Plate</h2>
+                <h3 class="fixed accent block">{{sumary}}</h3>
+                <div class="wrapper block pictureWrapper">
+                  <img class="picture" src="gen.png" alt="Extracted Image">
+              </div>
+        </div>
+             {% endif %}
+        </div>
+            
+      </div>
+        </div>
+      </div>
+    </section>
+
+  </body>
+</html>
