@@ -52,7 +52,7 @@ async def detect_plate(file: UploadFile = File(...)):
         images = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         print("Detecting plates from image...")
         cv2.imwrite("./images/output.jpg", images)
-        return FileResponse("./images/output.jpg", media_type="image/jpg")
+        return FileResponse("input_temp.mp4", media_type="video/mp4")
     except ValueError:
         vals = "Error! Please upload a valid image type."
         return vals
@@ -87,13 +87,10 @@ async def detect_plate_video(file: UploadFile = File(...)):
     try:
         #cap = cv2.VideoCapture('video.mp4')
         #image = np.array(image)
-        text= get_plates_from_video('input.mp4')
+        #text= get_plates_from_video('input.mp4')
         #cv2.imwrite('vids.mp4', text)
-        #return FileResponse("input_temp.mp4", media_type="video/mp4")
-        print('File converted')
+        return FileResponse("input_temp.mp4", media_type="video/mp4")
+        # print('File converted')
     except ValueError:
         vals = "Error! Please upload a valid image type."
         return vals
-
-
-#get_plates_from_video('input.mp4')

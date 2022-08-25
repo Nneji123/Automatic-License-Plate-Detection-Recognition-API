@@ -19,5 +19,5 @@ image = np.array(image)
 img = get_plates_from_image(image)
 print("Downloaded and loaded all files!")
 
-imgs = get_plates_from_video('./images/input.mp4')
-print('Saved video!')
+# imgs = get_plates_from_video('./images/input.mp4')
+# print('Saved video!')
