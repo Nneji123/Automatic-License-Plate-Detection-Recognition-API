@@ -1,26 +1,22 @@
 import io
 import os
 import sys
-from io import BytesIO
-import base64
-import time
 
 import cv2
 import numpy as np
-import pytesseract
 from fastapi import FastAPI, File, Request, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from PIL import Image
-
-from helpers import get_plate, load_model, preprocess_image
+from detections import get_plates_from_image, get_text_from_image
 
 sys.path.append(os.path.abspath(os.path.join("..", "config")))
 
 
 app = FastAPI(
-    title="AVNPR API",
-    description="""Automatic Vehicle Number Plate Recognition API.""",
+    title="ANPR(Automatic Number/License Plate Recognition) API",
+    description="""An API for recognising vehicle number plates in images and video.""",
     docs_url=None,
     redoc_url=None
 )
@@ -35,15 +31,15 @@ async def favicon():
     return FileResponse(favicon_path)
 
 
-@app.get("/running")
-async def running():
-    note = """
-    AVNPR API 📚
-    Automatic Vehicle License Plate Recognition API!
-    Note: add "/redoc" to get the complete documentation.
-    """
-    return note
+origins = ["*"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home(request: Request):
@@ -63,45 +59,23 @@ async def get_ocr(request: Request, file: UploadFile = File(...)):
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             cv2.imwrite("./images/image.jpg", img)
             try:
-                vehicle, LpImg, cor = get_plate("./images/image.jpg")
-                value = np.array(LpImg[0], dtype=np.float32)
-                wordcloud = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
-                wordcloud.save("./images/newimage.jpg")
-
-                image = Image.open("./images/newimage.jpg")
-
-                # Extracting text from image
-                custom_config = r"-l eng --oem 3 --psm 6"
-                text = pytesseract.image_to_string(image, config=custom_config)
-
-                # Remove symbol if any
-                characters_to_remove = "!()@—*“>+-/,'|£#%$&^_~"
-                new_string = text
-                for character in characters_to_remove:
-                    new_string = new_string.replace(character, "")
-
-                # Converting string into list to dislay extracted text in seperate line
-                new_string = new_string.split("\n")
-                word_cloud = get_plate_img()
+                image = Image.open('./images/image.jpg')
+                image = np.array(image)
+                img = get_plates_from_image(image)
+                text= get_text_from_image(image)
+                images = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                cv2.imwrite("./images/gen.jpg",images)
                 return templates.TemplateResponse(
-                    "ocr.html", {"request": request, "sumary": new_string[0]}
+                    "ocr.html", {"request": request, "sumary": text}
                 )
-            except AssertionError:
-                vals = "No License Plate Found"
-                return templates.TemplateResponse(
-                    "ocr.html", {"request": request, "sumary": vals}
-                )
+            except ValueError:
+                vals = "Error! Please upload a valid image type."
+                return vals
 
-def get_plate_img():
-    vehicle, LpImg, cor = get_plate("./images/image.jpg")
-    arr = np.array(LpImg[0], dtype=np.float32)
-    wordcloud = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
-    wordcloud.save("./images/gen.png")
-    
-    
+
 @app.get('/gen.png')
 async def favicon():
-    file_name = "./images/gen.png"
+    file_name = "./images/gen.jpg"
     return FileResponse(path=file_name)
 
 @app.get('/img.jpg')

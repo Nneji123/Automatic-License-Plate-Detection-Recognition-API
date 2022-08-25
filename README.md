@@ -69,15 +69,15 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 │   ├── app.py
 │   ├── docker-compose.yml
 │   ├── Dockerfile
-│   ├── helpers.py
+│   ├── download.py
 │   ├── images
 │   ├── __init__.py
 │   ├── models
 │   ├── requirements.txt
 │   ├── save_model.py
 │   ├── templates
-│   │   └── ocr.html
-│   └── utils.py
+│      └── ocr.html
+│  
 └── tests 
 ```
 

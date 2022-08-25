@@ -4,85 +4,71 @@ import sys
 
 import cv2
 import numpy as np
-import pytesseract
-from fastapi import FastAPI, File, Request, UploadFile
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, PlainTextResponse
 from PIL import Image
-
-from helpers import get_plate, load_model, preprocess_image
+from detections import get_plates_from_image, get_text_from_image
 
 sys.path.append(os.path.abspath(os.path.join("..", "config")))
 
 
 app = FastAPI(
-    title="AVNPR API",
-    description="""Automatic Vehicle Number Plate Recognition API.""",
+    title="ANPR(Automatic Number/License Plate Recognition) API",
+    description="""An API for recognising vehicle number plates in images and video.""",
 )
 
+origins = ["*"]
 
-favicon_path = "./images/favicon.ico"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
-@app.get("/favicon.ico", include_in_schema=False)
-async def favicon():
-    return FileResponse(favicon_path)
-
-
-@app.get("/")
-async def running():
+@app.get("/", response_class=PlainTextResponse, tags=["home"])
+async def home():
     note = """
-    AVNPR API 📚
-    Automatic Vehicle License Plate Recognition API!
+    ANPR(Automatic Number/License Plate Recognition) API"
+    An API for recognising vehicle number plates in images and video.
     Note: add "/redoc" to get the complete documentation.
     """
     return note
 
 
-# endpoint for just enhancing the image
-@app.post("/predict")
-async def predict_plot_image(file: UploadFile = File(...)):
+@app.post("/detect-plate")
+async def detect_plate(file: UploadFile = File(...)):
 
     contents = io.BytesIO(await file.read())
     file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    cv2.imwrite("./images/image.jpg", img)
+    cv2.imwrite("image.jpg", img)
     try:
-        vehicle, LpImg, cor = get_plate("./images/image.jpg")
-        arr = np.array(LpImg[0], dtype=np.float32)
-        pred_img = Image.fromarray((arr * 255).astype(np.uint8)).convert("RGB")
-        pred_img.save("./images/newimage.jpg")
-        return FileResponse("./images/newimage.jpg", media_type="image/jpg")
-    except AssertionError:
-        vals = "No License plate found"
+        image = Image.open('image.jpg')
+        image = np.array(image)
+        img = get_plates_from_image(image)
+        images = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        print("Detecting plates from image...")
+        cv2.imwrite("output.jpg", images)
+        return FileResponse("output.jpg", media_type="image/jpg")
+    except ValueError:
+        vals = "Error! Please upload a valid image type."
         return vals
 
-
-@app.post("/detect")
-async def get_ocr(file: UploadFile = File(...)) -> str:
+@app.post("/detect-plate-text")
+async def detect_plate_text(file: UploadFile = File(...)):
 
     contents = io.BytesIO(await file.read())
     file_bytes = np.asarray(bytearray(contents.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    cv2.imwrite("./images/image.jpg", img)
+    cv2.imwrite("image.jpg", img)
     try:
-        vehicle, LpImg, cor = get_plate("./images/image.jpg")
-        value = np.array(LpImg[0], dtype=np.float32)
-        pred_img = Image.fromarray((value * 255).astype(np.uint8)).convert("RGB")
-        pred_img.save("./images/newimage.jpg")
-        image = Image.open("./images/newimage.jpg")
-        # Extracting text from image
-        custom_config = r"-l eng --oem 3 --psm 6"
-        text = pytesseract.image_to_string(image, config=custom_config)
-
-        # Remove symbol if any
-        characters_to_remove = "!()@—*“>+-/,'|£#%$&^_~"
-        new_string = text
-        for character in characters_to_remove:
-            new_string = new_string.replace(character, "")
-
-        # Converting string into list to dislay extracted text in seperate line
-        new_string = new_string.split("\n")
-        return new_string[0]
-    except AssertionError:
-        vals = "No License Plate found."
+        image = Image.open('image.jpg')
+        image = np.array(image)
+        text= get_text_from_image(image)
+        return {"License Plate": text}
+    except ValueError:
+        vals = "Error! Please upload a valid image type."
         return vals

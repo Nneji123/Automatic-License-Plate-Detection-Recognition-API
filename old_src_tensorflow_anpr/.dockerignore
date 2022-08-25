@@ -1,0 +1,11 @@
+tests/
+.git/
+.gitignore
+.gitpod.yml
+docker-compose.yml
+LICENSE.md
+README.md
+*.pb
+*.bin
+variables/
+
