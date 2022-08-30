@@ -64,6 +64,7 @@ async def get_ocr(request: Request, file: UploadFile = File(...)):
                 img = get_plates_from_image(image)
                 text= get_text_from_image(image)
                 images = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                images = cv2.resize(images,(800,600), interpolation = cv2.INTER_AREA)
                 cv2.imwrite("./images/gen.jpg",images)
                 return templates.TemplateResponse(
                     "ocr.html", {"request": request, "sumary": text}

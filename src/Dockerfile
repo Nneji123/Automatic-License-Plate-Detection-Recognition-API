@@ -2,7 +2,7 @@ FROM python:3.8.13-slim-bullseye
 
 WORKDIR /app
 
-RUN apt-get -y update  && apt-get install -y \
+RUN apt-get -y update && apt-get install -y \
   wget \
   ffmpeg \ 
   libsm6 \
