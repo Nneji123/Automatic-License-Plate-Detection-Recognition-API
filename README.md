@@ -27,6 +27,7 @@ Official API Docker Image: https://hub.docker.com/repository/docker/nneji123/avn
 
 ## Contributors
 - **[NNEJI IFEANYI DANIEL](https://github.com/Nneji123)**
+- **[OKAI OKO RAPHAEL](https://github.com/JayRalph360)**
 
 
 ## Table of Contents
