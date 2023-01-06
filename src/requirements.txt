@@ -1,8 +1,10 @@
+# make sure to install pytorch with this command `pip install torch==1.13.1 --no-cache-dir`
+
 deep_sort_realtime==1.3.1
 numpy==1.23.2
-# paddleocr==2.6
+paddleocr==2.6.1.2
 paddlepaddle==2.3.2
 Pillow==9.2.0
 yolov7==0.0.1
 fastapi[all]
-# torch==1.13.1 --no-cache-dir
+
