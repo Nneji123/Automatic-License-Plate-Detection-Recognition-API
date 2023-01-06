@@ -126,16 +126,19 @@ def ocr_plate(plate_region):
 
     # OCR the preprocessed image
     results = paddle.ocr(sharpened, det=False, cls=False)
-    maxConfidenceResult = max(results, key=lambda result:result[1])
-    plate_text, ocr_confidence = maxConfidenceResult
+    print(results)
+    # maxConfidenceResult = max(results, key=lambda result:result[1])
+    # print(maxConfidenceResult)
+    plate_text= results[0][0][0]
+    
 
     # Filter out anything but uppercase letters, digits, hypens and whitespace.
     plate_text = re.sub(r'[^-A-Z0-9 ]', r'', plate_text).strip()
     
-    if ocr_confidence == 'nan':
-        ocr_confidence = 0
+    # if ocr_confidence == 'nan':
+    #     ocr_confidence = 0
     
-    return plate_text, ocr_confidence
+    return plate_text #, ocr_confidence
     
 from copy import deepcopy
 
@@ -144,13 +147,13 @@ def get_plates_from_image(input):
         return None
     plate_detections, det_confidences = detect_plate(input)
     plate_texts = []
-    ocr_confidences = []
+    # ocr_confidences = []
     detected_image = deepcopy(input)
     for coords in plate_detections:
         plate_region = crop(input, coords)
-        plate_text, ocr_confidence = ocr_plate(plate_region)
+        plate_text = ocr_plate(plate_region)
         plate_texts.append(plate_text)
-        ocr_confidences.append(ocr_confidence)
+        # ocr_confidences.append(ocr_confidence)
         plot_one_box(coords, detected_image, label=plate_text, color=[0, 150, 255], line_thickness=2)
     return detected_image
 
@@ -159,13 +162,13 @@ def get_text_from_image(input):
         return None
     plate_detections, det_confidences = detect_plate(input)
     plate_texts = []
-    ocr_confidences = []
+    # ocr_confidences = []
     detected_image = deepcopy(input)
     for coords in plate_detections:
         plate_region = crop(input, coords)
-        plate_text, ocr_confidence = ocr_plate(plate_region)
+        plate_text= ocr_plate(plate_region)
         plate_texts.append(plate_text)
-        ocr_confidences.append(ocr_confidence)
+        # ocr_confidences.append(ocr_confidence)
         plot_one_box(coords, detected_image, label=plate_text, color=[0, 150, 255], line_thickness=2)
     return plate_text
 
@@ -187,89 +190,89 @@ def get_best_ocr(preds, rec_conf, ocr_res, track_id):
             break
     return preds, rec_conf, ocr_res
 
-def get_plates_from_video(source):
-    if source is None:
-        return None
+# def get_plates_from_video(source):
+#     if source is None:
+#         return None
     
-    # Create a VideoCapture object
-    video = cv2.VideoCapture(source)
+#     # Create a VideoCapture object
+#     video = cv2.VideoCapture(source)
 
-    # Default resolutions of the frame are obtained. The default resolutions are system dependent.
-    # We convert the resolutions from float to integer.
-    width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = video.get(cv2.CAP_PROP_FPS)
+#     # Default resolutions of the frame are obtained. The default resolutions are system dependent.
+#     # We convert the resolutions from float to integer.
+#     width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+#     height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+#     fps = video.get(cv2.CAP_PROP_FPS)
 
-    # Define the codec and create VideoWriter object.
-    temp = f'{Path(source).stem}_temp{Path(source).suffix}'
-    export = cv2.VideoWriter(temp, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
+#     # Define the codec and create VideoWriter object.
+#     temp = f'{Path(source).stem}_temp{Path(source).suffix}'
+#     export = cv2.VideoWriter(temp, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
     
-    # Intializing tracker
-    tracker = DeepSort(embedder_gpu=False)
+#     # Intializing tracker
+#     tracker = DeepSort(embedder_gpu=False)
     
-    # Initializing some helper variables.
-    preds = []
-    total_obj = 0
+#     # Initializing some helper variables.
+#     preds = []
+#     total_obj = 0
 
-    while(True):
-        ret, frame = video.read()
-        if ret == True:
-            # Run the ANPR algorithm
-            bboxes, scores = detect_plate(frame)
-            # Convert Pascal VOC detections to COCO
-            bboxes = list(map(lambda bbox: pascal_voc_to_coco(bbox), bboxes))
+#     while(True):
+#         ret, frame = video.read()
+#         if ret == True:
+#             # Run the ANPR algorithm
+#             bboxes, scores = detect_plate(frame)
+#             # Convert Pascal VOC detections to COCO
+#             bboxes = list(map(lambda bbox: pascal_voc_to_coco(bbox), bboxes))
             
-            if len(bboxes) > 0:
-                # Storing all the required info in a list.
-                detections = [(bbox, score, 'number_plate') for bbox, score in zip(bboxes, scores)]
+#             if len(bboxes) > 0:
+#                 # Storing all the required info in a list.
+#                 detections = [(bbox, score, 'number_plate') for bbox, score in zip(bboxes, scores)]
 
-                # Applying tracker.
-                # The tracker code flow: kalman filter -> target association(using hungarian algorithm) and appearance descriptor.
-                tracks = tracker.update_tracks(detections, frame=frame)
+#                 # Applying tracker.
+#                 # The tracker code flow: kalman filter -> target association(using hungarian algorithm) and appearance descriptor.
+#                 tracks = tracker.update_tracks(detections, frame=frame)
 
-                # Checking if tracks exist.
-                for track in tracks:
-                    if not track.is_confirmed() or track.time_since_update > 1:
-                        continue
+#                 # Checking if tracks exist.
+#                 for track in tracks:
+#                     if not track.is_confirmed() or track.time_since_update > 1:
+#                         continue
 
-                    # Changing track bbox to top left, bottom right coordinates
-                    bbox = [int(position) for position in list(track.to_tlbr())]
+#                     # Changing track bbox to top left, bottom right coordinates
+#                     bbox = [int(position) for position in list(track.to_tlbr())]
                     
-                    for i in range(len(bbox)):
-                        if bbox[i] < 0:
-                            bbox[i] = 0
+#                     for i in range(len(bbox)):
+#                         if bbox[i] < 0:
+#                             bbox[i] = 0
 
-                    # Cropping the license plate and applying the OCR.
-                    plate_region = crop(frame, bbox)
-                    plate_text, ocr_confidence = ocr_plate(plate_region)
+#                     # Cropping the license plate and applying the OCR.
+#                     plate_region = crop(frame, bbox)
+#                     plate_text, ocr_confidence = ocr_plate(plate_region)
 
-                    # Storing the ocr output for corresponding track id.
-                    output_frame = {'track_id': track.track_id, 'ocr_txt': plate_text, 'ocr_conf': ocr_confidence}
+#                     # Storing the ocr output for corresponding track id.
+#                     output_frame = {'track_id': track.track_id, 'ocr_txt': plate_text, 'ocr_conf': ocr_confidence}
 
-                    # Appending track_id to list only if it does not exist in the list
-                    # else looking for the current track in the list and updating the highest confidence of it.
-                    if track.track_id not in list(set(pred['track_id'] for pred in preds)):
-                        total_obj += 1
-                        preds.append(output_frame)
-                    else:
-                        preds, ocr_confidence, plate_text = get_best_ocr(preds, ocr_confidence, plate_text, track.track_id)
+#                     # Appending track_id to list only if it does not exist in the list
+#                     # else looking for the current track in the list and updating the highest confidence of it.
+#                     if track.track_id not in list(set(pred['track_id'] for pred in preds)):
+#                         total_obj += 1
+#                         preds.append(output_frame)
+#                     else:
+#                         preds, ocr_confidence, plate_text = get_best_ocr(preds, ocr_confidence, plate_text, track.track_id)
                     
-                    # Plotting the prediction.
-                    plot_one_box(bbox, frame, label=f'{str(track.track_id)}. {plate_text}', color=[255, 150, 0], line_thickness=3)
+#                     # Plotting the prediction.
+#                     plot_one_box(bbox, frame, label=f'{str(track.track_id)}. {plate_text}', color=[255, 150, 0], line_thickness=3)
             
-            # Write the frame into the output file
-            export.write(frame)
-        else:
-            break 
+#             # Write the frame into the output file
+#             export.write(frame)
+#         else:
+#             break 
 
-    # When everything done, release the video capture and video write objects
+#     # When everything done, release the video capture and video write objects
     
-    video.release()
-    export.release()
+#     video.release()
+#     export.release()
 
-    # Compressing the output video for smaller size and web compatibility.
-    output = f'{Path(source).stem}_detected{Path(source).suffix}'
-    os.system(f'ffmpeg -y -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 1 -c:a aac -f mp4 /dev/null && ffmpeg -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 2 -c:a aac -movflags faststart {output}')
-    os.system(f'rm -rf {temp} ffmpeg2pass-0.log ffmpeg2pass-0.log.mbtree')
+#     # Compressing the output video for smaller size and web compatibility.
+#     output = f'{Path(source).stem}_detected{Path(source).suffix}'
+#     os.system(f'ffmpeg -y -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 1 -c:a aac -f mp4 /dev/null && ffmpeg -i {temp} -c:v libx264 -b:v 5000k -minrate 1000k -maxrate 8000k -pass 2 -c:a aac -movflags faststart {output}')
+#     os.system(f'rm -rf {temp} ffmpeg2pass-0.log ffmpeg2pass-0.log.mbtree')
 
-    return output
+#     return output

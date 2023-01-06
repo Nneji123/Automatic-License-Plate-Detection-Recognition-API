@@ -5,4 +5,4 @@ keras
 pytesseract==0.3.7
 fastapi[all]
 gunicorn
-sklearn
+scikit-learn

@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    container_name: simple-python-server2
+    container_name: simple-python-server3
     command: uvicorn app:app --reload --port 8000
     ports:
       - 8000:8000
